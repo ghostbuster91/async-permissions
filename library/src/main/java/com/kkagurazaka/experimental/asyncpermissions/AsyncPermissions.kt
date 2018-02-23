@@ -10,6 +10,10 @@ class AsyncPermissions(activity: AppCompatActivity) {
 
     suspend fun request(permission: String, vararg others: String): PermissionResult =
             suspendCancellableCoroutine { cont ->
-                asyncPermissionsFragment.request(permission, *others, cont = cont)
+                try {
+                    asyncPermissionsFragment.request(permission, *others, cont = cont)
+                } catch(ex: Exception){
+                    cont.resumeWithException(ex)
+                }
             }
 }
